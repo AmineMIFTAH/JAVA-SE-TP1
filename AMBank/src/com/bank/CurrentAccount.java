@@ -6,5 +6,4 @@ public class CurrentAccount extends Account implements Comparable<Account> {
 		super(label, client);
 		this.balance = balance;
 	}
-
 }

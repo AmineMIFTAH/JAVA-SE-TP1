@@ -1,18 +1,19 @@
 package com.bank;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		
 		Main main = new Main();
@@ -28,7 +29,7 @@ public class Main {
 		
 		
 		accounts = main.loadAccounts(clients);
-		//m.displayAccounts(accounts);
+		//main.displayAccounts(accounts);
 		for(Account account : accounts) {
 			if(account instanceof SavingsAccount)
 				System.out.println(account);
@@ -41,9 +42,32 @@ public class Main {
 		
 		// Flows
 		List<Flow> flows = new ArrayList<>();
+		flows = main.loadFlows(accounts);
+		
+
 		
 		
-			
+		
+		
+		
+		
+		/*
+		// JSON file of flows
+        String file = "src/test/resources/myFile.json";
+        String json = readFileAsString(file);
+        System.out.println(json);
+		*/
+		
+		
+        
+		// XML file of account 
+		
+		
+		
+		
+		
+		
+		
 	}	
 		public List<Client> loadClients(int numberClients){
 			List<Client> clients = new ArrayList<>();
@@ -116,15 +140,69 @@ public class Main {
 		}
 		
 		
-		public List<Flow> loadFlows(){
+		public List<Flow> loadFlows(List<Account> accounts){
+			
 			List<Flow> flows = new ArrayList<>();
 			
 			Flow debit = new Debit(50, 1);
 			flows.add(debit);
 			
-			return flows;
+			Flow credit = null;
 			
+			for(Account account : accounts) {
+				if(account instanceof CurrentAccount) {
+					credit = new Credit(100.50, account.getAccountNumber());
+				}else {
+					credit = new Credit(1500, account.getAccountNumber());
+				}
+				flows.add(credit);
+			}
+			
+			Flow transfert = new Transfert(50, 2, 1);
+			flows.add(transfert);
+			
+			for(Flow flow : flows) {
+				flow.setDateFlow(flow.getDateFlow().plusDays(2));
+			}
+			
+			
+			
+			return flows;		
 		}
+		
+		
+		
+		public void updateBalanceOfAccounts(List<Flow> flows, Hashtable<Integer, Account> hashTableOfAccounts )	{
+
+			for(Flow flow : flows) {
+				hashTableOfAccounts.get(flow.getTargetAccountNumber()).setBalance(flow);
+			}
+			
+			
+			Optional<Account> optionalAccount = hashTableOfAccounts.entrySet()
+			.stream()
+			.map(element -> element.getValue())
+			.filter(element -> element.getBalance() < 0)
+			.findAny();
+			
+			if(optionalAccount.isPresent()) {
+				System.out.println("There is an account with a negative balance");
+			}
+			
+			
+		}	
+		
+		
+		
+		
+	    public static String readFileAsString(String file)throws Exception
+	    {
+	        return new String(Files.readAllBytes(Paths.get(file)));
+	    }
+		
+		
+		
+		
 		
 
 	

@@ -1,6 +1,6 @@
 package com.bank;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 public abstract class Flow {
@@ -9,7 +9,7 @@ public abstract class Flow {
 	private double amount;
 	private int targetAccountNumber;
 	private boolean effect;
-	private Date dateFlow;
+	private LocalDate dateFlow;
 	
 	
 	
@@ -18,8 +18,7 @@ public abstract class Flow {
 	public Flow(double amount, int targetAccountNumber) {
 		this.amount = amount;
 		this.targetAccountNumber = targetAccountNumber;
-		Date date = new Date();
-		this.dateFlow = date;
+		this.dateFlow = LocalDate.now();
 	}
 	
 	
@@ -55,10 +54,10 @@ public abstract class Flow {
 	public void setEffect(boolean effect) {
 		this.effect = effect;
 	}
-	public Date getDateFlow() {
+	public LocalDate getDateFlow() {
 		return dateFlow;
 	}
-	public void setDateFlow(Date dateFlow) {
+	public void setDateFlow(LocalDate dateFlow) {
 		this.dateFlow = dateFlow;
 	}
 	

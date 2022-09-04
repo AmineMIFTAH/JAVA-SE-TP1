@@ -3,8 +3,9 @@ package com.bank;
 public class Transfert extends Flow {
 	private int accountNumber;
 	
-	public Transfert(double amount, int targetAccountNumber) {
+	public Transfert(double amount, int targetAccountNumber, int accountNumber) {
 		super(amount, targetAccountNumber);
+		this.accountNumber = accountNumber;
 	}
 
 	public int getAccountNumber() {

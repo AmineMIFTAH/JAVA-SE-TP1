@@ -12,10 +12,11 @@ public abstract class Account implements Comparable<Account> {
 	static int accNumber = 0;
 	
 	public Account(String label, Client client ) {
-		this.label = label;
-		this.client = client;
 		Account.accNumber++;
 		this.accountNumber = Account.accNumber;
+		this.label = label;
+		this.client = client;
+		
 	}
 
 	public String getLabel() {
@@ -30,26 +31,26 @@ public abstract class Account implements Comparable<Account> {
 		return balance;
 	}
 
-	public void setBalance(double amount, Flow flow) {
+	public void setBalance(Flow flow) {
 		if(flow instanceof Credit)
-			this.balance += amount;
+			this.balance += flow.getAmount();
 		
 		if(flow instanceof Debit) {
-			if(amount > this.balance)
+			if(flow.getAmount() > this.balance)
 				System.out.println("Set Balance fails using Debit");
 			else
-				this.balance -= amount;
+				this.balance -= flow.getAmount();
 		}
 		
 		if(flow instanceof Transfert) {
 			if(this.accountNumber == flow.getTargetAccountNumber())
-				this.balance += amount;
+				this.balance += flow.getAmount();
 
 			if(this.accountNumber == ((Transfert) flow).getAccountNumber()) {
-				if(amount > this.balance)
+				if(flow.getAmount() > this.balance)
 					System.out.println("Set Balance fails using Transfert");
 				else
-					this.balance -= amount;
+					this.balance -= flow.getAmount();
 			}				
 		}
 	}

@@ -8,8 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 
 public class Main {
 
@@ -29,38 +28,23 @@ public class Main {
 		
 		
 		accounts = main.loadAccounts(clients);
-		//main.displayAccounts(accounts);
-		for(Account account : accounts) {
-			if(account instanceof SavingsAccount)
-				System.out.println(account);
-		}
+		main.displayAccounts(accounts);
 		
 		// Adaptation of the table of accounts
-		Hashtable<Integer, Account> HashMapOfAccounts = main.loadHashTable(accounts);
-		main.displayHashTableOfAccounts(HashMapOfAccounts);
+		Hashtable<Integer, Account> HashTableOfAccounts = main.loadHashTable(accounts);
+		main.displayHashTableOfAccounts(HashTableOfAccounts);
 		
 		
 		// Flows
 		List<Flow> flows = new ArrayList<>();
 		flows = main.loadFlows(accounts);
 		
+		// Update Balance
+		main.updateBalanceOfAccounts(flows, HashTableOfAccounts);
+		
+		
 
-		
-		
-		
-		
-		
-		
-		/*
-		// JSON file of flows
-        String file = "src/test/resources/myFile.json";
-        String json = readFileAsString(file);
-        System.out.println(json);
-		*/
-		
-		
-        
-		// XML file of account 
+
 		
 		
 		
@@ -193,13 +177,7 @@ public class Main {
 		}	
 		
 		
-		
-		
-	    public static String readFileAsString(String file)throws Exception
-	    {
-	        return new String(Files.readAllBytes(Paths.get(file)));
-	    }
-		
+
 		
 		
 		
